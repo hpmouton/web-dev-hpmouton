@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 
 class RateController extends Controller
 {
@@ -18,23 +19,18 @@ class RateController extends Controller
             'Ages' => 'required|array|min:1',
             'Ages.*' => 'integer|min:0'
         ]);
-        /**
-         * Children are most welcome at all our venues. Children up to 5 years old are free of charge; for children
-         * between the age of 6 and 13 years we charge 50 per cent of the camping rate. For teenagers 13 years and
-         * older we charge the adult rates.
-         */
-        $guests = collect($data['Ages'])->map(function ($age) {
-            if ($age <= 5) {
-            return ['Age Group' => 'Free'];
-            } elseif ($age >= 6 && $age <= 12) {
-            return ['Age Group' => 'Half'];
-            } else {
-            return ['Age Group' => 'Adult'];
-            }
-        });
+
+        // Store original ages to potentially re-map later
+        $originalAges = $data['Ages'];
+
+        // Prepare Guests payload for the remote API as per its documentation: "Adult" or "Child"
+        $guestsForRemoteApi = collect($originalAges)->map(function ($age) {
+            return ['Age Group' => ($age >= 13) ? 'Adult' : 'Child'];
+        })->all();
+
         $unitMap = [
-            'Luxury Tent' => -2147483637,
-            'Standard Room' => -2147483456,
+            'Dessert Whisperer' => -2147483637,
+            'Khalahari Camping2Go' => -2147483456,
         ];
 
         $unitName = $data['Unit Name'];
@@ -47,33 +43,91 @@ class RateController extends Controller
 
         $payload = [
             'Unit Type ID' => $unitMap[$unitName],
-            'Arrival' => \Carbon\Carbon::createFromFormat('d/m/Y', $data['Arrival'])->toDateString(),
-            'Departure' => \Carbon\Carbon::createFromFormat('d/m/Y', $data['Departure'])->toDateString(),
-            'Guests' => $guests->all()
+            'Arrival' => Carbon::createFromFormat('d/m/Y', $data['Arrival'])->toDateString(),
+            'Departure' => Carbon::createFromFormat('d/m/Y', $data['Departure'])->toDateString(),
+            'Guests' => $guestsForRemoteApi
         ];
+
+        \Log::info('Sending payload to remote API:', $payload);
 
         $response = Http::post(config('app.rates'), $payload);
 
         if ($response->failed()) {
-            return response()->json([
-                'error' => 'Failed to retrieve rates from remote service',
+            $remoteError = $response->json('error') ?? $response->json('message') ?? $response->body();
+            \Log::error('Remote API request failed:', [
                 'status' => $response->status(),
-                'message' => $response->body()
+                'response_body' => $response->body(),
+                'payload_sent' => $payload
+            ]);
+
+            return response()->json([
+                'error' => 'Failed to retrieve rates from remote service. ' . (is_string($remoteError) ? $remoteError : 'Please try again later.'),
+                'status' => $response->status(),
             ], $response->status());
         }
-        if (!$response->json() || !isset($response->json()['Rates'])) {
+
+        $jsonResponse = $response->json();
+
+        if (!is_array($jsonResponse) || (!isset($jsonResponse['Rates']) && !isset($jsonResponse['Legs']))) {
+            \Log::error('Invalid or unexpected response from remote API:', [
+                'response_body' => $response->body(),
+                'payload_sent' => $payload
+            ]);
             return response()->json([
-                'error' => 'Invalid response from remote service',
-                'status' => $response->status(),
-                'message' => $response->body()
+                'error' => 'Invalid response from remote service. The structure was not as expected.',
+                'status' => 500,
             ], 500);
         }
+
+        // --- Post-Processing Remote Response for Frontend ---
+
+        // 1. Format Due Day dates
+        if (isset($jsonResponse['Legs'])) {
+            foreach ($jsonResponse['Legs'] as &$leg) {
+                if (isset($leg['Deposit Breakdown'])) {
+                    foreach ($leg['Deposit Breakdown'] as &$deposit) {
+                        if (isset($deposit['Due Day']) && is_numeric($deposit['Due Day'])) {
+                            // Convert Excel serial date to Carbon date
+                            // Assuming 25569 is the correct magic number for your system/API
+                            $unixTimestamp = ($deposit['Due Day'] - 25569) * 86400;
+                            if ($unixTimestamp > 0) {
+                                $deposit['Due Date Formatted'] = Carbon::createFromTimestamp($unixTimestamp)->format('d/m/Y');
+                            } else {
+                                $deposit['Due Date Formatted'] = 'Invalid Date';
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        // 2. Add Your Internal Age Grouping to the Remote Response for clarity
+        // This is where you clarify for your frontend what happened based on your rules.
+        $processedGuests = [];
+        foreach ($originalAges as $age) {
+            $category = '';
+            if ($age <= 5) {
+                $category = 'Free (0-5)';
+            } elseif ($age >= 6 && $age <= 12) {
+                $category = 'Half Rate (6-12)';
+            } else { // age >= 13
+                $category = 'Adult (13+)';
+            }
+            $processedGuests[] = [
+                'age' => $age,
+                'your_category' => $category,
+                // You might also try to match this to a remote leg, but that can be complex
+            ];
+        }
+
+        // Add a summary of how your API interpreted the guest ages
+        $jsonResponse['your_guest_breakdown'] = $processedGuests;
 
 
         return response()->json([
             'unit_name' => $data['Unit Name'],
             'payload_sent' => $payload,
-            'remote_response' => $response->json()
+            'remote_response' => $jsonResponse
         ]);
     }
 }

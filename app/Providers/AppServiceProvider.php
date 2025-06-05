@@ -13,8 +13,8 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         $this->app->bind('rates-api-url', function () {
-        return config('app.rates', env('RATES_API_URL'));
-    });
+            return config('app.rates', env('RATES_API_URL'));
+        });
 
     }
 

@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\Controller;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 
 class RateController extends Controller
 {
-
     public function getRates(Request $request)
     {
         $data = $request->validate([
@@ -18,7 +17,7 @@ class RateController extends Controller
             'Departure' => 'required|date_format:d/m/Y',
             'Occupants' => 'required|integer|min:1',
             'Ages' => 'required|array|min:1',
-            'Ages.*' => 'integer|min:0'
+            'Ages.*' => 'integer|min:0',
         ]);
 
         $originalAges = $data['Ages'];
@@ -34,9 +33,9 @@ class RateController extends Controller
 
         $unitName = $data['Unit Name'];
 
-        if (!isset($unitMap[$unitName])) {
+        if (! isset($unitMap[$unitName])) {
             return response()->json([
-                'error' => "Unknown Unit Name: {$unitName}"
+                'error' => "Unknown Unit Name: {$unitName}",
             ], 422);
         }
 
@@ -44,7 +43,7 @@ class RateController extends Controller
             'Unit Type ID' => $unitMap[$unitName],
             'Arrival' => Carbon::createFromFormat('d/m/Y', $data['Arrival'])->toDateString(),
             'Departure' => Carbon::createFromFormat('d/m/Y', $data['Departure'])->toDateString(),
-            'Guests' => $guestsForRemoteApi
+            'Guests' => $guestsForRemoteApi,
         ];
 
         \Log::info('Sending payload to remote API:', $payload);
@@ -56,28 +55,28 @@ class RateController extends Controller
             \Log::error('Remote API request failed:', [
                 'status' => $response->status(),
                 'response_body' => $response->body(),
-                'payload_sent' => $payload
+                'payload_sent' => $payload,
             ]);
 
             return response()->json([
-                'error' => 'Failed to retrieve rates from remote service. ' . (is_string($remoteError) ? $remoteError : 'Please try again later.'),
+                'error' => 'Failed to retrieve rates from remote service. '.(is_string($remoteError) ? $remoteError : 'Please try again later.'),
                 'status' => $response->status(),
             ], $response->status());
         }
 
         $jsonResponse = $response->json();
 
-        if (!is_array($jsonResponse) || (!isset($jsonResponse['Rates']) && !isset($jsonResponse['Legs']))) {
+        if (! is_array($jsonResponse) || (! isset($jsonResponse['Rates']) && ! isset($jsonResponse['Legs']))) {
             \Log::error('Invalid or unexpected response from remote API:', [
                 'response_body' => $response->body(),
-                'payload_sent' => $payload
+                'payload_sent' => $payload,
             ]);
+
             return response()->json([
                 'error' => 'Invalid response from remote service. The structure was not as expected.',
                 'status' => 500,
             ], 500);
         }
-
 
         if (isset($jsonResponse['Legs'])) {
             foreach ($jsonResponse['Legs'] as &$leg) {
@@ -98,7 +97,6 @@ class RateController extends Controller
             }
         }
 
-
         $processedGuests = [];
         foreach ($originalAges as $age) {
             $category = '';
@@ -117,11 +115,10 @@ class RateController extends Controller
 
         $jsonResponse['your_guest_breakdown'] = $processedGuests;
 
-
         return response()->json([
             'unit_name' => $data['Unit Name'],
             'payload_sent' => $payload,
-            'remote_response' => $jsonResponse
+            'remote_response' => $jsonResponse,
         ]);
     }
 }

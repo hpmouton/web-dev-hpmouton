@@ -9,6 +9,7 @@ use Carbon\Carbon;
 
 class RateController extends Controller
 {
+
     public function getRates(Request $request)
     {
         $data = $request->validate([
@@ -20,10 +21,8 @@ class RateController extends Controller
             'Ages.*' => 'integer|min:0'
         ]);
 
-        // Store original ages to potentially re-map later
         $originalAges = $data['Ages'];
 
-        // Prepare Guests payload for the remote API as per its documentation: "Adult" or "Child"
         $guestsForRemoteApi = collect($originalAges)->map(function ($age) {
             return ['Age Group' => ($age >= 13) ? 'Adult' : 'Child'];
         })->all();
@@ -79,9 +78,7 @@ class RateController extends Controller
             ], 500);
         }
 
-        // --- Post-Processing Remote Response for Frontend ---
 
-        // 1. Format Due Day dates
         if (isset($jsonResponse['Legs'])) {
             foreach ($jsonResponse['Legs'] as &$leg) {
                 if (isset($leg['Deposit Breakdown'])) {
@@ -101,8 +98,7 @@ class RateController extends Controller
             }
         }
 
-        // 2. Add Your Internal Age Grouping to the Remote Response for clarity
-        // This is where you clarify for your frontend what happened based on your rules.
+
         $processedGuests = [];
         foreach ($originalAges as $age) {
             $category = '';
@@ -110,17 +106,15 @@ class RateController extends Controller
                 $category = 'Free (0-5)';
             } elseif ($age >= 6 && $age <= 12) {
                 $category = 'Half Rate (6-12)';
-            } else { // age >= 13
+            } else {
                 $category = 'Adult (13+)';
             }
             $processedGuests[] = [
                 'age' => $age,
                 'your_category' => $category,
-                // You might also try to match this to a remote leg, but that can be complex
             ];
         }
 
-        // Add a summary of how your API interpreted the guest ages
         $jsonResponse['your_guest_breakdown'] = $processedGuests;
 
 

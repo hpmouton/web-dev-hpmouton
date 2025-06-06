@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Testing\Fluent\AssertableJson;
 
 $validPayload = [
-    'Unit Name' => 'Dessert Whisperer',
+    'Unit Name' => 'Kalahari Farmhouse',
     'Arrival' => '13/06/2025',
     'Departure' => '21/06/2025',
     'Occupants' => 1,
@@ -85,9 +85,9 @@ it('returns rates for valid input and processes remote API response correctly', 
     );
 });
 
-it('returns rates for Khalahari Camping2Go with specific unit ID', function () use ($mockSuccessfulRemoteResponse) {
+it('returns rates for Klipspringer Camps with specific unit ID', function () use ($mockSuccessfulRemoteResponse) {
     $campingPayload = [
-        'Unit Name' => 'Khalahari Camping2Go',
+        'Unit Name' => 'Klipspringer Camps',
         'Arrival' => '10/07/2025',
         'Departure' => '15/07/2025',
         'Occupants' => 2,
@@ -151,7 +151,7 @@ it('returns error for unknown unit name', function () {
 
 it('returns validation error for wrong date format', function () {
     $response = $this->postJson('api/get-rates', [
-        'Unit Name' => 'Dessert Whisperer',
+        'Unit Name' => 'Kalahari Farmhouse',
         'Arrival' => '2025-06-05',
         'Departure' => '07/06/2025',
         'Occupants' => 2,
@@ -164,7 +164,7 @@ it('returns validation error for wrong date format', function () {
 
 it('returns validation error for empty ages array', function () {
     $response = $this->postJson('api/get-rates', [
-        'Unit Name' => 'Dessert Whisperer',
+        'Unit Name' => 'Kalahari Farmhouse',
         'Arrival' => '05/06/2025',
         'Departure' => '07/06/2025',
         'Occupants' => 2,
@@ -193,7 +193,7 @@ it('handles failed remote API call gracefully', function () {
     ]);
 
     $response = $this->postJson('api/get-rates', [
-        'Unit Name' => 'Dessert Whisperer',
+        'Unit Name' => 'Kalahari Farmhouse',
         'Arrival' => '05/06/2025',
         'Departure' => '07/06/2025',
         'Occupants' => 2,
@@ -215,7 +215,7 @@ it('handles invalid response from remote API (missing Legs)', function () {
     ]);
 
     $response = $this->postJson('api/get-rates', [
-        'Unit Name' => 'Dessert Whisperer',
+        'Unit Name' => 'Kalahari Farmhouse',
         'Arrival' => '05/06/2025',
         'Departure' => '07/06/2025',
         'Occupants' => 2,
@@ -234,7 +234,7 @@ it('handles invalid response from remote API (non-array response)', function () 
     ]);
 
     $response = $this->postJson('api/get-rates', [
-        'Unit Name' => 'Dessert Whisperer',
+        'Unit Name' => 'Kalahari Farmhouse',
         'Arrival' => '05/06/2025',
         'Departure' => '07/06/2025',
         'Occupants' => 2,
@@ -267,7 +267,7 @@ it('correctly processes deposit breakdown date format', function () use ($validP
 
 it('correctly categorizes guests in your_guest_breakdown', function () use ($mockSuccessfulRemoteResponse) {
     $payloadWithMixedAges = [
-        'Unit Name' => 'Dessert Whisperer',
+        'Unit Name' => 'Kalahari Farmhouse',
         'Arrival' => '13/06/2025',
         'Departure' => '21/06/2025',
         'Occupants' => 3,

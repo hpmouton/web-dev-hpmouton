@@ -1,0 +1,35 @@
+name: QA Check
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        coverage: xdebug
+
+    - run: composer install --no-ansi --no-interaction --no-progress --prefer-dist
+
+    - run: |
+        cp .env.example .env
+        php artisan key:generate
+
+    - run: vendor/bin/pint --test
+
+    - run: vendor/bin/pest --coverage-clover=coverage.xml
+
+    - uses: actions/upload-artifact@v4
+      with:
+        name: code-coverage-report
+        path: coverage.xml

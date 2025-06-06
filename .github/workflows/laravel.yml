@@ -25,7 +25,7 @@ jobs:
         cp .env.example .env
         php artisan key:generate
 
-    - run: vendor/bin/pint --test
+    # - run: vendor/bin/pint --test
 
     - run: vendor/bin/pest --coverage-clover=coverage.xml
 

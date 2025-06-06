@@ -1,5 +1,5 @@
 ---
-[![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=hpmouton_web-dev-lvdberg79)
+[![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=hpmouton_web-dev-hpmouton)
 
 # Rate Checker App
 

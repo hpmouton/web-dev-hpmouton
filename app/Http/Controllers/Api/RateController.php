@@ -27,8 +27,8 @@ class RateController extends Controller
         })->all();
 
         $unitMap = [
-            'Dessert Whisperer' => -2147483637,
-            'Khalahari Camping2Go' => -2147483456,
+            'Kalahari Farmhouse' => -2147483637,
+            'Klipspringer Camps' => -2147483456,
         ];
 
         $unitName = $data['Unit Name'];

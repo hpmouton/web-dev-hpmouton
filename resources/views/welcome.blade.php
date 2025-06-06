@@ -2,11 +2,10 @@
 
 @section('content')
     <div class="min-h-screen bg-gray-50 py-4 px-4 sm:px-6 lg:px-8" x-data="rateChecker()">
-        <div class="max-w-6xl mx-auto bg-white border rounded-xl p-8 md:p-10 space-y-8 border border-gray-200">
-            <h1 class="text-4xl font-extrabold text-gray-900 text-center leading-tight">
-                <span class="inline-block transform -rotate-3 text-blue-600 mr-2">✨</span> Get Your Stay Rates
-            </h1>
-            <p class="text-center text-gray-600 text-lg mb-6">Enter your details to receive an instant price estimate.</p>
+        <div class="max-w-8xl mx-auto bg-white border rounded-xl p-8 md:p-10 space-y-8 border border-gray-200">
+
+
+
 
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-x-4 gap-y-8">
                 <div class="lg:border-r lg:col-span-2 lg:border-gray-200 lg:pr-8 space-y-7">
@@ -17,24 +16,39 @@
                             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                 <template x-for="unit in units" :key="unit.name">
                                     <div @click="form['Unit Name'] = unit.name"
-                                        :class="{ 'border-blue-500 scale-102': form['Unit Name'] === unit
-                                            .name, 'border-gray-300 hover:border-blue-300': form['Unit Name'] !== unit
-                                                .name }"
-                                        class="relative flex flex-col items-center justify-center p-2 border rounded-lg border cursor-pointer transition-all duration-200 ease-in-out group">
-                                        <img :src="unit.image" :alt="unit.name"
-                                            class="w-full h-32 object-cover rounded-md mb-3 group-hover:scale-102 transition-transform duration-200 ease-in-out">
-                                        <span class="text-lg font-medium text-gray-800 group-hover:text-blue-600"
-                                            x-text="unit.name"></span>
-                                        <template x-if="form['Unit Name'] === unit.name">
-                                            <div
-                                                class="absolute top-2 right-2 bg-blue-500 text-white rounded-full p-1.5 border">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
-                                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                                        d="M5 13l4 4L19 7"></path>
+                                        :class="{
+                                            'border-yellow-500 border': form['Unit Name'] === unit.name,
+                                            'border-gray-300': form['Unit Name'] !== unit.name
+                                        }"
+                                        class="relative group overflow-hidden rounded-xl cursor-pointer transition-all duration-300 ease-in-out">
+
+                                        <!-- Image Container -->
+                                        <div class="relative h-48 w-full">
+                                            <img :src="unit.image" :alt="unit.name"
+                                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
+
+                                            <!-- Glassmorphic Overlay - Only visible on hover -->
+                                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                <div class="absolute bottom-0 left-0 right-0 p-4 text-white backdrop-blur-sm bg-white/10">
+                                                    <p class="text-sm line-clamp-3" x-text="unit.description"></p>
+                                                </div>
+                                            </div>
+
+                                            <!-- Selected Checkmark -->
+                                            <div x-show="form['Unit Name'] === unit.name"
+                                                class="absolute top-3 right-3 bg-yellow-500 text-white rounded-full p-2 shadow-lg z-10">
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
                                                 </svg>
                                             </div>
-                                        </template>
+                                        </div>
+
+                                        <!-- Title (Always Visible) -->
+                                        <div class="p-4 bg-white border-t">
+                                            <h3 class="text-lg font-medium text-gray-800 group-hover:text-yellow-600 transition-colors duration-300"
+                                                x-text="unit.name"></h3>
+                                        </div>
+
                                     </div>
                                 </template>
                             </div>
@@ -115,11 +129,11 @@
                                                         class="p-1 cursor-pointer text-center text-sm leading-none leading-loose transition ease-in-out duration-100"
                                                         :class="{
                                                             'font-bold': isToday(date) == true,
-                                                            'bg-blue-800 text-white rounded-l-full': isDateFrom(date) ==
+                                                            'bg-yellow-800 text-white rounded-l-full': isDateFrom(date) ==
                                                                 true,
-                                                            'bg-blue-800 text-white rounded-r-full': isDateTo(date) ==
+                                                            'bg-yellow-800 text-white rounded-r-full': isDateTo(date) ==
                                                                 true,
-                                                            'bg-blue-200': isInRange(date) == true,
+                                                            'bg-yellow-200': isInRange(date) == true,
                                                             'text-gray-400 cursor-not-allowed': isPastDate(
                                                                 date) // Disable past dates
                                                         }"
@@ -138,7 +152,7 @@
                                 Guests</label>
                             <input id="occupants" x-model.number="form.Occupants" type="number" min="1"
                                 max="10" @input="updateAgesFields"
-                                class="form-input w-full px-4 py-2.5 border border-gray-300 rounded-lg border focus:ring-blue-500 focus:border-blue-500 text-base appearance-none transition-all duration-200 ease-in-out">
+                                class="form-input w-full px-4 py-2.5 border border-gray-300 rounded-lg border focus:ring-yellow-500 focus:border-yellow-500 text-base appearance-none transition-all duration-200 ease-in-out">
                             <p class="text-xs text-gray-500 mt-1.5">Total count, including all adults and children.</p>
                             <p x-show="form.Occupants < 1 && submitted" class="text-xs text-red-500 mt-1.5 animate-pulse">
                                 At least 1 guest is required.</p>
@@ -152,7 +166,7 @@
                                             x-text="index + 1"></span></label>
                                     <input :id="'age-' + index" x-model.number="form.Ages[index]" type="number"
                                         min="0"
-                                        class="form-input w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500 text-base transition-all duration-200 ease-in-out"
+                                        class="form-input w-full px-4 py-2.5 border border-gray-300 rounded-lg shadow-sm focus:ring-yellow-500 focus:border-yellow-500 text-base transition-all duration-200 ease-in-out"
                                         placeholder="e.g., 5, 12, 30">
                                     <p x-show="(form.Ages[index] === null || isNaN(form.Ages[index]) || form.Ages[index] < 0) && submitted"
                                         class="text-xs text-red-500 mt-1.5 animate-pulse">Please enter a valid age.</p>
@@ -164,7 +178,7 @@
 
                         <div class="pt-4">
                             <button type="submit"
-                                class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3.5 rounded-lg border hover:border transition transform hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                                class="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3.5 rounded-lg border hover:border transition transform hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
                                 :disabled="loading || !allFieldsValid()">
                                 <template x-if="loading">
                                     <span class="flex justify-center items-center space-x-2">
@@ -204,27 +218,33 @@
                     </template>
 
                     <template x-if="result && result.remote_response">
-                        <div class="bg-white border border-gray-200 p-2 rounded-lg">
+                        <div class="bg-white  p-2 rounded-lg">
                             <!-- Main Summary -->
                             <div class="mb-6">
                                 <h3 class="font-semibold text-xl text-gray-900 mb-4">Rate Details</h3>
                                 <div class="flex justify-between items-center mb-4 pb-3 border-b">
                                     <p class="text-md font-semibold text-gray-900">Total Amount</p>
-                                    <p class="text-md font-semibold text-gray-900 truncate" x-text="formatCurrency(result.remote_response['Total Charge'])"></p>
+                                    <p class="text-md font-semibold text-gray-900 truncate"
+                                        x-text="formatCurrency(result.remote_response['Total Charge'])"></p>
                                 </div>
 
                                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                     <div>
                                         <p class="text-sm text-gray-500">Booking Reference</p>
-                                        <p class="font-medium text-gray-900 truncate" x-text="result.remote_response['Booking Group ID']"></p>
+                                        <p class="font-medium text-gray-900 truncate"
+                                            x-text="result.remote_response['Booking Group ID']"></p>
                                     </div>
                                     <div>
                                         <p class="text-sm text-gray-500">Number of Rooms</p>
-                                        <p class="font-medium text-gray-900" x-text="result.remote_response.Rooms"></p>
+                                        <p class="font-medium text-gray-900">
+                                            <span x-show="result.remote_response.Rooms > 0" x-text="result.remote_response.Rooms"></span>
+                                            <span x-show="result.remote_response.Rooms === 0" class="text-red-500 font-medium">No rooms available</span>
+                                        </p>
                                     </div>
                                     <div>
                                         <p class="text-sm text-gray-500">Extra Charges</p>
-                                        <p class="font-medium text-gray-900" x-text="formatCurrency(result.remote_response['Extras Charge'])"></p>
+                                        <p class="font-medium text-gray-900"
+                                            x-text="formatCurrency(result.remote_response['Extras Charge'])"></p>
                                     </div>
                                 </div>
                             </div>
@@ -233,12 +253,15 @@
                             <div class="mb-6" x-show="result.remote_response.your_guest_breakdown">
                                 <h4 class="text-md font-semibold text-gray-900 mb-3">Guest Information</h4>
                                 <div class="grid grid-cols-2 gap-2">
-                                    <template x-for="(guest, index) in result.remote_response.your_guest_breakdown" :key="index">
-                                        <div class="border border-gray-100 p-3 rounded" :class="{'bg-blue-50': guest.age > 13, 'bg-green-50': guest.age <= 13}">
+                                    <template x-for="(guest, index) in result.remote_response.your_guest_breakdown"
+                                        :key="index">
+                                        <div class="border border-gray-100 p-3 rounded"
+                                            :class="{ 'bg-yellow-50': guest.age > 13, 'bg-green-50': guest.age <= 13 }">
                                             <p class="text-xs text-gray-500">Guest <span x-text="index + 1"></span></p>
                                             <p class="font-medium text-sm text-gray-900">
                                                 <span x-text="guest.age + ' years old'"></span>
-                                                <span x-text="guest.age <= 13 ? ' (Child)' : ' (Adult)'" class="text-xs"></span>
+                                                <span x-text="guest.age <= 13 ? ' (Child)' : ' (Adult)'"
+                                                    class="text-xs"></span>
                                             </p>
                                         </div>
                                     </template>
@@ -246,30 +269,37 @@
                             </div>
 
                             <!-- Rate Details -->
-                            <div class="mb-6" x-show="result.remote_response.Legs && result.remote_response.Legs.length > 0">
+                            <div class="mb-6"
+                                x-show="result.remote_response.Legs && result.remote_response.Legs.length > 0">
                                 <h4 class="text-md font-semibold text-gray-900 mb-3">Rate Details</h4>
                                 <div class="space-y-3">
                                     <template x-for="(rate, index) in result.remote_response.Legs" :key="index">
                                         <div class="border border-gray-100 p-4 rounded bg-gray-50">
-                                            <p class="font-medium text-gray-900 mb-3" x-text="rate['Special Rate Description']"></p>
+                                            <p class="font-medium text-gray-900 mb-3"
+                                                x-text="rate['Special Rate Description']"></p>
 
                                             <div class="grid grid-cols-2 gap-4 mb-3">
                                                 <div>
                                                     <p class="text-sm text-gray-500">Daily Rate</p>
-                                                    <p class="font-medium text-gray-900" x-text="formatCurrency(rate['Effective Average Daily Rate'])"></p>
+                                                    <p class="font-medium text-gray-900"
+                                                        x-text="formatCurrency(rate['Effective Average Daily Rate'])"></p>
                                                 </div>
                                                 <div>
                                                     <p class="text-sm text-gray-500">Total Charge</p>
-                                                    <p class="font-medium text-gray-900" x-text="formatCurrency(rate['Total Charge'])"></p>
+                                                    <p class="font-medium text-gray-900"
+                                                        x-text="formatCurrency(rate['Total Charge'])"></p>
                                                 </div>
                                             </div>
 
-                                            <div class="mt-3" x-show="rate['Deposit Breakdown'] && rate['Deposit Breakdown'].length > 0">
+                                            <div class="mt-3"
+                                                x-show="rate['Deposit Breakdown'] && rate['Deposit Breakdown'].length > 0">
                                                 <p class="text-sm font-semibold text-gray-700 mb-2">Deposit Information</p>
-                                                <template x-for="(deposit, dIndex) in rate['Deposit Breakdown']" :key="dIndex">
+                                                <template x-for="(deposit, dIndex) in rate['Deposit Breakdown']"
+                                                    :key="dIndex">
                                                     <div class="flex justify-between items-center text-sm">
                                                         <span x-text="'Due: ' + deposit['Due Date Formatted']"></span>
-                                                        <span class="font-medium" x-text="formatCurrency(deposit['Due Amount'])"></span>
+                                                        <span class="font-medium"
+                                                            x-text="formatCurrency(deposit['Due Amount'])"></span>
                                                     </div>
                                                 </template>
                                             </div>
@@ -279,22 +309,22 @@
                                     </template>
                                 </div>
                             </div>
-                            </div>
-
-
                         </div>
-                    </template>
 
-                    <template x-if="!result && !error">
-                        <div
-                            class="bg-gray-100 border border-gray-300 text-gray-600 px-4 py-4 rounded-lg relative border text-center text-lg">
-                            <p class="mb-2">Rates will appear here after you submit the form.</p>
-                            <p class="text-sm">Fill in the details on the left to get started!</p>
-                        </div>
-                    </template>
+
                 </div>
+                </template>
+
+                <template x-if="!result && !error">
+                    <div
+                        class="bg-gray-100 border border-gray-300 text-gray-600 px-4 py-4 rounded-lg relative border text-center text-lg">
+                        <p class="mb-2">Rates will appear here after you submit the form.</p>
+                        <p class="text-sm">Fill in the details on the left to get started!</p>
+                    </div>
+                </template>
             </div>
         </div>
+    </div>
     </div>
 
 
@@ -320,12 +350,14 @@
 
                 // Unit types data
                 units: [{
-                        name: 'Dessert Whisperer',
-                        image: 'https://gondwana-collection.com/hubfs/Gondwana%20Website/02%20TRAVEL%20CENTRE/Lodges%20and%20Camps/Desert%20Whisper/Desert%20Whisper_main%20banner.jpg'
+                        name: 'Kalahari Farmhouse',
+                        image: 'https://travelground.imgix.net/AAEAAQAAAAAAAAAAAAAAd9ba2af10e20060dc151da5d7b3b00d6dbf5f77d283c33396fafb5fd7a9fe9e6e3b42aa098e2ef07d44359e00a692e964a07?fit=crop&auto=enhance,format,compress&q=80&w=1600&ar=1:1',
+                        description: 'A luxurious farmhouse retreat nestled in the Kalahari desert, offering comfortable rooms with modern amenities and authentic farm-style hospitality.'
                     },
                     {
-                        name: 'Khalahari Camping2Go',
-                        image: 'https://gondwana-collection.com/hubfs/Gondwana%20Website/Accommodation/Kalahari%20Anib%20Camping2Go/Kalahari%20Anib%20Camping2Go%20(3).jpg'
+                        name: 'Klipspringer Camps',
+                        image: 'https://www.namibia-forum.ch/images/obgrabber/2020-06/0e5c0537fc.jpeg',
+                        description: 'Scenic camping sites situated among rocky outcrops, perfect for nature lovers seeking an intimate desert experience with basic amenities.'
                     },
                     // Add more units here
                 ],
@@ -470,7 +502,7 @@
                 },
 
                 getDateValue(
-                date) { // Removed 'temp' parameter as it's no longer needed for primary logic
+                    date) { // Removed 'temp' parameter as it's no longer needed for primary logic
                     if (this.isPastDate(date)) {
                         return; // Do nothing if it's a past date
                     }
@@ -501,7 +533,7 @@
                     // This updates the input fields and form model after a selection or init
                     if (this.dateFrom) {
                         this.outputDateFromValue = this.dateFrom.toLocaleDateString(
-                        'en-GB'); // DD/MM/YYYY
+                            'en-GB'); // DD/MM/YYYY
                         this.form.Arrival = this.outputDateFromValue; // Update form value
                     } else {
                         this.outputDateFromValue = '';
@@ -520,7 +552,7 @@
                 getNoOfDays() {
                     let daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
                     let dayOfWeek = new Date(this.year, this.month, 1)
-                .getDay(); // Get day of week for 1st of month
+                        .getDay(); // Get day of week for 1st of month
 
                     let blankdaysArray = [];
                     for (let i = 0; i < dayOfWeek; i++) {
@@ -608,7 +640,7 @@
                     console.log('Full Payload sent to API:', payload); // See the exact payload
                     // Define your API endpoint here
                     const apiUrl =
-                    'api/get-rates'; // <--- IMPORTANT: Replace with your actual API URL
+                        'api/get-rates'; // <--- IMPORTANT: Replace with your actual API URL
 
                     try {
                         const response = await fetch(apiUrl, {
@@ -664,55 +696,4 @@
             }));
         });
     </script>
-
-    <style>
-        /* Custom animations for results/errors */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(20px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .animate-fade-in-down {
-            animation: fadeInDown 0.5s ease-out forwards;
-        }
-
-        .animate-fade-in-up {
-            animation: fadeInUp 0.5s ease-out forwards;
-        }
-
-        /* Optional: Hide number input spin buttons for a cleaner look */
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-
-        input[type="number"] {
-            -moz-appearance: textfield;
-        }
-
-        /* Alpine x-cloak style */
-        [x-cloak] {
-            display: none !important;
-        }
-    </style>
 @endsection

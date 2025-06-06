@@ -27,10 +27,10 @@
                     <div class="hidden md:block">
                         <div class="ml-10 flex items-baseline space-x-4">
 
-                            <a href="/" class="rounded-md bg-yellow-900 px-3 py-2 text-sm font-medium text-white"
+                            <a href="/" class="rounded-md bg-yellow-900 px-3 py-2 text-sm font-medium text-white transition-all duration-300 ease-in-out"
                                 aria-current="page">Rate Checker</a>
                             <a href="/docs"
-                                class="rounded-md px-3 py-2 text-sm font-medium text-yellow-900 hover:bg-yellow-700   hover:text-white">API Docs</a>
+                                class="rounded-md px-3 py-2 text-sm font-medium text-yellow-900 hover:bg-yellow-700   hover:text-white transition-all duration-280 ease-in-out">API Docs</a>
 
                         </div>
                     </div>

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="min-h-screen bg-gray-50 py-4 px-4 sm:px-6 lg:px-8" x-data="rateChecker()">
+    <div class="min-h-screen bg-gradient-to-tr from-amber-50/20 to-stone-50 py-4 px-4 sm:px-6 lg:px-8" x-data="rateChecker()">
         <div class="max-w-8xl mx-auto  p-8 md:p-10 space-y-8 ">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-x-4 gap-y-8">
                 <div class="rounded-xl p-12 bg-white border lg:col-span-2 border-gray-200 lg:pr-8 space-y-7">
@@ -14,7 +14,7 @@
                                 <template x-for="unit in units" :key="unit.name">
                                     <div @click="form['Unit Name'] = unit.name"
                                         :class="{
-                                            'border-yellow-500 border': form['Unit Name'] === unit.name,
+                                            'border-yellow-500 border bg-yellow-50 text-yellow-600': form['Unit Name'] === unit.name,
                                             'border-gray-300': form['Unit Name'] !== unit.name
                                         }"
                                         class="relative group overflow-hidden rounded-xl cursor-pointer transition-all duration-300 ease-in-out">
@@ -41,9 +41,12 @@
                                             </div>
                                         </div>
 
-                                        <div class="p-4 bg-white border-t">
-                                            <h3 class="text-lg font-medium text-gray-800 group-hover:text-yellow-600 transition-colors duration-300"
-                                                x-text="unit.name"></h3>
+                                        <div class="p-4 group-hover:bg-yellow-50 transition-all duration-300">
+                                            <h3 class="text-lg font-semibold  group-hover:text-yellow-600 transition-colors duration-300 flex items-center justify-between">
+                                                <span x-text="unit.name"></span>
+
+                                            </h3>
+
                                         </div>
 
                                     </div>
@@ -53,110 +56,103 @@
                                 Please select a unit.</p>
                         </div>
 
-                        <div>
-                            <label for="datepicker"
-                            class="block text-sm font-semibold text-gray-800 mb-2">
-                                Select Stay Dates</label>
-                            <div class="relative" @keydown.escape="closeDatepicker()" @click.outside="closeDatepicker()">
-                                <div
-                                    class="inline-flex items-center border border-gray-300 rounded-lg border bg-white w-full">
-                                    <input type="text"
-                                        @click="endToShow = 'from'; initDatepicker(); showDatepicker = true"
-                                        x-model="outputDateFromValue" :class="{ 'font-semibold': endToShow == 'from' }"
-                                        class="focus:outline-none border-0 p-2.5 w-full rounded-l-lg border-r border-gray-300" />
-                                    <div class="inline-block px-3 h-full text-gray-500">to</div>
-                                    <input type="text" @click="endToShow = 'to'; initDatepicker(); showDatepicker = true"
-                                        x-model="outputDateToValue" :class="{ 'font-semibold': endToShow == 'to' }"
-                                        class="focus:outline-none border-0 p-2.5 w-full rounded-r-lg border-l border-gray-300" />
-                                </div>
-                                <p x-show="!form.Arrival && submitted" class="text-xs text-red-500 mt-1.5 animate-pulse">
-                                    Arrival date is required.</p>
-                                <p x-show="!form.Departure && submitted" class="text-xs text-red-500 mt-1.5 animate-pulse">
-                                    Departure date is required.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="datepicker" class="block text-sm font-semibold text-gray-800 mb-2">
+                                    Select Stay Dates
+                                </label>
+                                <div class="relative" @keydown.escape="closeDatepicker()" @click.outside="closeDatepicker()">
+                                    <div class="inline-flex items-center border border-gray-300 rounded-lg border bg-white w-full">
+                                        <input type="text" @click="endToShow = 'from'; initDatepicker(); showDatepicker = true"
+                                            x-model="outputDateFromValue" :class="{ 'font-semibold': endToShow == 'from' }"
+                                            class="focus:outline-none border-0 p-2.5 w-full rounded-l-lg border-r border-gray-300" />
+                                        <div class="inline-block px-3 h-full text-gray-500">to</div>
+                                        <input type="text" @click="endToShow = 'to'; initDatepicker(); showDatepicker = true"
+                                            x-model="outputDateToValue" :class="{ 'font-semibold': endToShow == 'to' }"
+                                            class="focus:outline-none border-0 p-2.5 w-full rounded-r-lg border-l border-gray-300" />
+                                    </div>
+                                    <div x-show="(!form.Arrival || !form.Departure) && submitted" class="mt-1.5">
+                                        <p x-show="!form.Arrival" class="text-xs text-red-500 animate-pulse">Arrival date required.</p>
+                                        <p x-show="!form.Departure" class="text-xs text-red-500 animate-pulse">Departure date required.</p>
+                                    </div>
 
-
-                                <div class="bg-white mt-2 rounded-lg border p-4 absolute z-10" style="width: 17rem"
-                                    x-show="showDatepicker" x-transition>
-                                    <div class="flex flex-col items-center">
-
-                                        <div class="w-full flex justify-between items-center mb-2">
-                                            <div>
-                                                <span x-text="MONTH_NAMES[month]"
-                                                    class="text-lg font-bold text-gray-800"></span>
-                                                <span x-text="year" class="ml-1 text-lg text-gray-600 font-normal"></span>
-                                            </div>
-                                            <div>
-                                                <button type="button"
-                                                    class="transition ease-in-out duration-100 inline-flex cursor-pointer hover:bg-gray-200 p-1 rounded-full"
-                                                    @click="if (month == 0) {year--; month=11;} else {month--;} getNoOfDays()">
-                                                    <svg class="h-6 w-6 text-gray-500 inline-flex" fill="none"
-                                                        viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M15 19l-7-7 7-7" />
-                                                    </svg>
-                                                </button>
-                                                <button type="button"
-                                                    class="transition ease-in-out duration-100 inline-flex cursor-pointer hover:bg-gray-200 p-1 rounded-full"
-                                                    @click="if (month == 11) {year++; month=0;} else {month++;}; getNoOfDays()">
-                                                    <svg class="h-6 w-6 text-gray-500 inline-flex" fill="none"
-                                                        viewBox="0 0 24 24" stroke="currentColor">
-                                                        <path stroke-linecap="round" stroke-linejoin="round"
-                                                            stroke-width="2" d="M9 5l7 7-7 7" />
-                                                    </svg>
-                                                </button>
-                                            </div>
-                                        </div>
-
-                                        <div class="w-full flex flex-wrap mb-3 -mx-1">
-                                            <template x-for="(day, index) in DAYS" :key="index">
-                                                <div style="width: 14.26%" class="px-1">
-                                                    <div x-text="day"
-                                                        class="text-gray-800 font-medium text-center text-xs"></div>
+                                    <!-- Date Picker Popup -->
+                                    <div class="bg-white mt-2 rounded-lg border p-4 absolute z-10" style="width: 17rem"
+                                        x-show="showDatepicker" x-transition>
+                                        <div class="flex flex-col items-center">
+                                            <!-- Calendar Header -->
+                                            <div class="w-full flex justify-between items-center mb-2">
+                                                <div>
+                                                    <span x-text="MONTH_NAMES[month]" class="text-lg font-bold text-gray-800"></span>
+                                                    <span x-text="year" class="ml-1 text-lg text-gray-600 font-normal"></span>
                                                 </div>
-                                            </template>
-                                        </div>
-
-                                        <div class="flex flex-wrap -mx-1">
-                                            <template x-for="blankday in blankdays">
-                                                <div style="width: 14.28%"
-                                                    class="text-center border p-1 border-transparent text-sm"></div>
-                                            </template>
-                                            <template x-for="(date, dateIndex) in no_of_days" :key="dateIndex">
-                                                <div style="width: 14.28%">
-                                                    <div @click="getDateValue(date)" x-text="date"
-                                                        class="p-1 cursor-pointer text-center text-sm leading-none leading-loose transition ease-in-out duration-100"
-                                                        :class="{
-                                                            'font-bold': isToday(date) == true,
-                                                            'bg-yellow-800 text-white rounded-l-full': isDateFrom(
-                                                                date) ==
-                                                                true,
-                                                            'bg-yellow-800 text-white rounded-r-full': isDateTo(date) ==
-                                                                true,
-                                                            'bg-yellow-200': isInRange(date) == true,
-                                                            'text-gray-400 cursor-not-allowed': isPastDate(
-                                                                date) // Disable past dates
-                                                        }"
-                                                        :disabled="isPastDate(date)"></div>
+                                                <div>
+                                                    <button type="button" class="transition ease-in-out duration-100 inline-flex cursor-pointer hover:bg-gray-200 p-1 rounded-full"
+                                                        @click="if (month == 0) {year--; month=11;} else {month--;} getNoOfDays()">
+                                                        <svg class="h-6 w-6 text-gray-500 inline-flex" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                                                        </svg>
+                                                    </button>
+                                                    <button type="button" class="transition ease-in-out duration-100 inline-flex cursor-pointer hover:bg-gray-200 p-1 rounded-full"
+                                                        @click="if (month == 11) {year++; month=0;} else {month++;}; getNoOfDays()">
+                                                        <svg class="h-6 w-6 text-gray-500 inline-flex" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                                                        </svg>
+                                                    </button>
                                                 </div>
-                                            </template>
+                                            </div>
+
+                                            <!-- Calendar Days -->
+                                            <div class="w-full flex flex-wrap mb-3 -mx-1">
+                                                <template x-for="(day, index) in DAYS" :key="index">
+                                                    <div style="width: 14.26%" class="px-1">
+                                                        <div x-text="day" class="text-gray-800 font-medium text-center text-xs"></div>
+                                                    </div>
+                                                </template>
+                                            </div>
+
+                                            <!-- Calendar Dates -->
+                                            <div class="flex flex-wrap -mx-1">
+                                                <template x-for="blankday in blankdays">
+                                                    <div style="width: 14.28%" class="text-center border p-1 border-transparent text-sm"></div>
+                                                </template>
+                                                <template x-for="(date, dateIndex) in no_of_days" :key="dateIndex">
+                                                    <div style="width: 14.28%">
+                                                        <div @click="getDateValue(date)" x-text="date"
+                                                            class="p-1 cursor-pointer text-center text-sm leading-none leading-loose transition ease-in-out duration-100"
+                                                            :class="{
+                                                                'font-bold': isToday(date) == true,
+                                                                'bg-yellow-800 text-white rounded-l-full': isDateFrom(date) == true,
+                                                                'bg-yellow-800 text-white rounded-r-full': isDateTo(date) == true,
+                                                                'bg-yellow-200': isInRange(date) == true,
+                                                                'text-gray-400 cursor-not-allowed': isPastDate(date)
+                                                            }"
+                                                            :disabled="isPastDate(date)">
+                                                        </div>
+                                                    </div>
+                                                </template>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
+                            <div>
+                                <label for="occupants" class="block text-sm font-semibold text-gray-800 mb-2">
+                                    Number of Guests
+                                </label>
+                                <input id="occupants" x-model.number="form.Occupants" type="number" min="1" max="10"
+                                    @input="updateAgesFields"
+                                    class="form-input w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-yellow-500 focus:border-yellow-500 text-base appearance-none transition-all duration-200 ease-in-out">
+                                <p class="text-xs text-gray-500 mt-1.5">Total count, including all adults and children.</p>
+                                <p x-show="form.Occupants < 1 && submitted" class="text-xs text-red-500 mt-1.5 animate-pulse">
+                                    At least 1 guest is required.
+                                </p>
+                            </div>
                         </div>
 
 
-                        <div>
-                            <label for="occupants"
-                            class="block text-sm font-semibold text-gray-800 mb-2">
-                                Number of Guests</label>
-                            <input id="occupants" x-model.number="form.Occupants" type="number" min="1"
-                                max="10" @input="updateAgesFields"
-                                class="form-input w-full px-4 py-2.5 border border-gray-300 rounded-lg border focus:ring-yellow-500 focus:border-yellow-500 text-base appearance-none transition-all duration-200 ease-in-out">
-                            <p class="text-xs text-gray-500 mt-1.5">Total count, including all adults and children.</p>
-                            <p x-show="form.Occupants < 1 && submitted" class="text-xs text-red-500 mt-1.5 animate-pulse">
-                                At least 1 guest is required.</p>
-                        </div>
+
 
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                             <template x-for="(age, index) in form.Ages" :key="index">
@@ -178,7 +174,7 @@
 
                         <div class="pt-4">
                             <button type="submit"
-                                class="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3.5 rounded-lg border hover:border transition transform hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2"
+                                class="w-full bg-yellow-600 hover:bg-yellow-700 text-white font-bold py-3.5 rounded-lg border hover:border transition transform hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 cursor-pointer"
                                 :disabled="loading || !allFieldsValid()">
                                 <template x-if="loading">
                                     <span class="flex justify-center items-center space-x-2">
@@ -197,7 +193,7 @@
                 </div>
 
                 <div class="space-y-7 lg:pl-8 rounded-xl p-12 bg-white border border-gray-200">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-3">Your Results</h2>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-3">Dream Trip Details</h2>
 
                     <template x-if="error">
                         <div class="bg-red-50 border border-red-300 text-red-700 px-5 py-4 rounded-lg relative border animate-fade-in-down"

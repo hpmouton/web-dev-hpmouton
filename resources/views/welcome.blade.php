@@ -3,13 +3,9 @@
 @section('content')
     <div class="min-h-screen bg-gray-50 py-4 px-4 sm:px-6 lg:px-8" x-data="rateChecker()">
         <div class="max-w-8xl mx-auto bg-white border rounded-xl p-8 md:p-10 space-y-8 border border-gray-200">
-
-
-
-
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-x-4 gap-y-8">
                 <div class="lg:border-r lg:col-span-2 lg:border-gray-200 lg:pr-8 space-y-7">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-3">Booking Details</h2>
+                    <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-3">Get a Quote for Your Next Adventure</h2>
                     <form @submit.prevent="submitForm" class="space-y-6">
                         <div>
                             <label class="block text-sm font-semibold text-gray-800 mb-2">Select Unit Type</label>
@@ -28,22 +24,24 @@
                                                 class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
 
                                             <!-- Glassmorphic Overlay - Only visible on hover -->
-                                            <div class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                                                <div class="absolute bottom-0 left-0 right-0 p-4 text-white backdrop-blur-sm bg-white/10">
+                                            <div
+                                                class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                                <div
+                                                    class="absolute bottom-0 left-0 right-0 p-4 text-white backdrop-blur-sm bg-white/10">
                                                     <p class="text-sm line-clamp-3" x-text="unit.description"></p>
                                                 </div>
                                             </div>
 
-                                            <!-- Selected Checkmark -->
                                             <div x-show="form['Unit Name'] === unit.name"
                                                 class="absolute top-3 right-3 bg-yellow-500 text-white rounded-full p-2 shadow-lg z-10">
-                                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                                <svg class="w-4 h-4" fill="none" stroke="currentColor"
+                                                    viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                        d="M5 13l4 4L19 7"></path>
                                                 </svg>
                                             </div>
                                         </div>
 
-                                        <!-- Title (Always Visible) -->
                                         <div class="p-4 bg-white border-t">
                                             <h3 class="text-lg font-medium text-gray-800 group-hover:text-yellow-600 transition-colors duration-300"
                                                 x-text="unit.name"></h3>
@@ -129,7 +127,8 @@
                                                         class="p-1 cursor-pointer text-center text-sm leading-none leading-loose transition ease-in-out duration-100"
                                                         :class="{
                                                             'font-bold': isToday(date) == true,
-                                                            'bg-yellow-800 text-white rounded-l-full': isDateFrom(date) ==
+                                                            'bg-yellow-800 text-white rounded-l-full': isDateFrom(
+                                                                date) ==
                                                                 true,
                                                             'bg-yellow-800 text-white rounded-r-full': isDateTo(date) ==
                                                                 true,
@@ -219,7 +218,6 @@
 
                     <template x-if="result && result.remote_response">
                         <div class="bg-white  p-2 rounded-lg">
-                            <!-- Main Summary -->
                             <div class="mb-6">
                                 <h3 class="font-semibold text-xl text-gray-900 mb-4">Rate Details</h3>
                                 <div class="flex justify-between items-center mb-4 pb-3 border-b">
@@ -237,8 +235,10 @@
                                     <div>
                                         <p class="text-sm text-gray-500">Number of Rooms</p>
                                         <p class="font-medium text-gray-900">
-                                            <span x-show="result.remote_response.Rooms > 0" x-text="result.remote_response.Rooms"></span>
-                                            <span x-show="result.remote_response.Rooms === 0" class="text-red-500 font-medium">No rooms available</span>
+                                            <span x-show="result.remote_response.Rooms > 0"
+                                                x-text="result.remote_response.Rooms"></span>
+                                            <span x-show="result.remote_response.Rooms === 0"
+                                                class="text-red-500 font-medium">No rooms available</span>
                                         </p>
                                     </div>
                                     <div>
@@ -249,7 +249,6 @@
                                 </div>
                             </div>
 
-                            <!-- Guest Information -->
                             <div class="mb-6" x-show="result.remote_response.your_guest_breakdown">
                                 <h4 class="text-md font-semibold text-gray-900 mb-3">Guest Information</h4>
                                 <div class="grid grid-cols-2 gap-2">
@@ -268,7 +267,6 @@
                                 </div>
                             </div>
 
-                            <!-- Rate Details -->
                             <div class="mb-6"
                                 x-show="result.remote_response.Legs && result.remote_response.Legs.length > 0">
                                 <h4 class="text-md font-semibold text-gray-900 mb-3">Rate Details</h4>
@@ -303,15 +301,11 @@
                                                     </div>
                                                 </template>
                                             </div>
-
-
                                         </div>
                                     </template>
                                 </div>
                             </div>
                         </div>
-
-
                 </div>
                 </template>
 
@@ -325,8 +319,6 @@
             </div>
         </div>
     </div>
-    </div>
-
 
     <script>
         const MONTH_NAMES = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September',
@@ -336,363 +328,324 @@
 
         document.addEventListener('alpine:init', () => {
             Alpine.data('rateChecker', () => ({
-                form: {
-                    'Unit Name': '',
-                    'Arrival': '',
-                    'Departure': '',
-                    'Occupants': 1,
-                    'Ages': [0]
+            form: {
+                'Unit Name': '',
+                'Arrival': '',
+                'Departure': '',
+                'Occupants': 1,
+                'Ages': [0]
+            },
+            loading: false,
+            result: null,
+            error: null,
+            submitted: false,
+
+            units: [{
+                name: 'Kalahari Farmhouse',
+                image: 'https://travelground.imgix.net/AAEAAQAAAAAAAAAAAAAAd9ba2af10e20060dc151da5d7b3b00d6dbf5f77d283c33396fafb5fd7a9fe9e6e3b42aa098e2ef07d44359e00a692e964a07?fit=crop&auto=enhance,format,compress&q=80&w=1600&ar=1:1',
+                description: 'A luxurious farmhouse retreat nestled in the Kalahari desert, offering comfortable rooms with modern amenities and authentic farm-style hospitality.'
                 },
-                loading: false,
-                result: null,
-                error: null,
-                submitted: false,
-
-                // Unit types data
-                units: [{
-                        name: 'Kalahari Farmhouse',
-                        image: 'https://travelground.imgix.net/AAEAAQAAAAAAAAAAAAAAd9ba2af10e20060dc151da5d7b3b00d6dbf5f77d283c33396fafb5fd7a9fe9e6e3b42aa098e2ef07d44359e00a692e964a07?fit=crop&auto=enhance,format,compress&q=80&w=1600&ar=1:1',
-                        description: 'A luxurious farmhouse retreat nestled in the Kalahari desert, offering comfortable rooms with modern amenities and authentic farm-style hospitality.'
-                    },
-                    {
-                        name: 'Klipspringer Camps',
-                        image: 'https://www.namibia-forum.ch/images/obgrabber/2020-06/0e5c0537fc.jpeg',
-                        description: 'Scenic camping sites situated among rocky outcrops, perfect for nature lovers seeking an intimate desert experience with basic amenities.'
-                    },
-                    // Add more units here
-                ],
-
-                // Datepicker specific properties
-                showDatepicker: false,
-                outputDateFromValue: '', // Displays in the input fields (e.g., "DD/MM/YYYY")
-                outputDateToValue: '', // Displays in the input fields
-                dateFrom: null, // Date object for selected start date
-                dateTo: null, // Date object for selected end date
-                currentDate: null,
-                endToShow: '', // 'from' or 'to' to indicate which input is active
-
-                month: '',
-                year: '',
-                no_of_days: [],
-                blankdays: [],
-
-                init() {
-                    // Initial setup for the date picker based on today's date
-                    this.currentDate = new Date();
-                    this.month = this.currentDate.getMonth();
-                    this.year = this.currentDate.getFullYear();
-                    this.getNoOfDays(); // Populate the calendar grid
-                    this.updateAgesFields(); // Initial call for occupants
-
-                    // Initialize date picker inputs if form already has values
-                    if (this.form.Arrival) {
-                        this.dateFrom = this.parseDateForValidation(this.form.Arrival);
-                        this.outputDateFromValue = this.form.Arrival;
-                    }
-                    if (this.form.Departure) {
-                        this.dateTo = this.parseDateForValidation(this.form.Departure);
-                        this.outputDateToValue = this.form.Departure;
-                    }
+                {
+                name: 'Klipspringer Camps',
+                image: 'https://www.namibia-forum.ch/images/obgrabber/2020-06/0e5c0537fc.jpeg',
+                description: 'Scenic camping sites situated among rocky outcrops, perfect for nature lovers seeking an intimate desert experience with basic amenities.'
                 },
+            ],
 
-                // --- Datepicker Methods ---
+            showDatepicker: false,
+            outputDateFromValue: '',
+            outputDateToValue: '',
+            dateFrom: null,
+            dateTo: null,
+            currentDate: null,
+            endToShow: '',
 
-                // Helper to parse DD/MM/YYYY string into a Date object
-                parseDateForValidation(dateString) {
-                    if (!dateString) return null;
-                    const parts = dateString.split('/');
-                    if (parts.length === 3) {
-                        // new Date(year, monthIndex, day)
-                        const d = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[
-                            0]));
-                        d.setHours(0, 0, 0, 0); // Normalize to start of day
-                        return d;
-                    }
-                    return null;
-                },
+            month: '',
+            year: '',
+            no_of_days: [],
+            blankdays: [],
 
-                // Helper to convert DD/MM/YYYY to YYYY-MM-DD for backend
-                convertDmYToYmd(dateString) {
-                    if (!dateString) return '';
-                    const parts = dateString.split('/');
-                    if (parts.length === 3) {
-                        return `${parts[2]}-${parts[1]}-${parts[0]}`;
-                    }
-                    return dateString;
-                },
+            init() {
+                this.currentDate = new Date();
+                this.month = this.currentDate.getMonth();
+                this.year = this.currentDate.getFullYear();
+                this.getNoOfDays();
+                this.updateAgesFields();
 
-                // Helper to convert YYYY-MM-DD (from backend response) to DD/MM/YYYY for display
-                formatDateForDisplay(dateYmdString) {
-                    if (!dateYmdString) return '';
-                    const parts = dateYmdString.split('-');
-                    if (parts.length === 3) {
-                        return `${parts[2]}/${parts[1]}/${parts[0]}`;
-                    }
-                    return dateYmdString;
-                },
-
-                initDatepicker() {
-                    // Determine which month/year to display when opening the picker
-                    let targetDate = new Date(); // Default to today
-
-                    if (this.endToShow === 'from' && this.dateFrom) {
-                        targetDate = this.dateFrom;
-                    } else if (this.endToShow === 'to' && this.dateTo) {
-                        targetDate = this.dateTo;
-                    } else if (this
-                        .dateFrom) { // If dateFrom exists but endToShow isn't set (e.g., re-opening)
-                        targetDate = this.dateFrom;
-                    } else if (this.dateTo) { // If dateTo exists
-                        targetDate = this.dateTo;
-                    }
-
-                    this.month = targetDate.getMonth();
-                    this.year = targetDate.getFullYear();
-                    this.getNoOfDays(); // Re-populate calendar grid for the new month/year
-                },
-
-                isToday(date) {
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
-                    const d = new Date(this.year, this.month, date);
-                    d.setHours(0, 0, 0, 0);
-                    return today.toDateString() === d.toDateString();
-                },
-
-                isPastDate(date) {
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0); // Normalize today to start of day
-                    const d = new Date(this.year, this.month, date);
-                    d.setHours(0, 0, 0, 0); // Normalize selected date to start of day
-                    return d < today;
-                },
-
-                isDateFrom(date) {
-                    const d = new Date(this.year, this.month, date);
-                    d.setHours(0, 0, 0, 0);
-                    return this.dateFrom && d.toDateString() === this.dateFrom.toDateString();
-                },
-
-                isDateTo(date) {
-                    const d = new Date(this.year, this.month, date);
-                    d.setHours(0, 0, 0, 0);
-                    return this.dateTo && d.toDateString() === this.dateTo.toDateString();
-                },
-
-                isInRange(date) {
-                    const d = new Date(this.year, this.month, date);
-                    d.setHours(0, 0, 0, 0);
-
-                    if (!this.dateFrom) return false;
-
-                    let effectiveDateFrom = this.dateFrom;
-                    let effectiveDateTo = this.dateTo;
-
-                    // If only dateFrom is selected, or if dateTo is being hovered before dateFrom
-                    if (!effectiveDateTo || (this.endToShow === 'to' && d < effectiveDateFrom)) {
-                        effectiveDateTo = d; // Temporarily consider hovered date as end
-                    }
-
-                    // Ensure dateFrom is always before dateTo for range check
-                    if (effectiveDateFrom > effectiveDateTo) {
-                        [effectiveDateFrom, effectiveDateTo] = [effectiveDateTo, effectiveDateFrom];
-                    }
-
-                    return d > effectiveDateFrom && d < effectiveDateTo;
-                },
-
-                getDateValue(
-                    date) { // Removed 'temp' parameter as it's no longer needed for primary logic
-                    if (this.isPastDate(date)) {
-                        return; // Do nothing if it's a past date
-                    }
-
-                    let selectedDate = new Date(this.year, this.month, date);
-                    selectedDate.setHours(0, 0, 0, 0); // Normalize to start of day
-
-                    if (!this.dateFrom || (this.dateFrom && this.dateTo)) {
-                        // Start a new selection or if both dates are already selected, restart
-                        this.dateFrom = selectedDate;
-                        this.dateTo = null; // Clear dateTo for new range
-                        this.endToShow = 'to'; // Next selection is 'to'
-                    } else if (this.dateFrom && !this.dateTo) {
-                        // Second click: setting the 'to' date
-                        if (selectedDate <= this.dateFrom) {
-                            // If selected date is before or same as dateFrom, swap them
-                            this.dateTo = this.dateFrom;
-                            this.dateFrom = selectedDate;
-                        } else {
-                            this.dateTo = selectedDate;
-                        }
-                        this.closeDatepicker(); // Close after selecting both dates
-                    }
-                    this.outputDateValues(); // Always update input fields for visual feedback
-                },
-
-                outputDateValues() {
-                    // This updates the input fields and form model after a selection or init
-                    if (this.dateFrom) {
-                        this.outputDateFromValue = this.dateFrom.toLocaleDateString(
-                            'en-GB'); // DD/MM/YYYY
-                        this.form.Arrival = this.outputDateFromValue; // Update form value
-                    } else {
-                        this.outputDateFromValue = '';
-                        this.form.Arrival = '';
-                    }
-
-                    if (this.dateTo) {
-                        this.outputDateToValue = this.dateTo.toLocaleDateString('en-GB'); // DD/MM/YYYY
-                        this.form.Departure = this.outputDateToValue; // Update form value
-                    } else {
-                        this.outputDateToValue = '';
-                        this.form.Departure = '';
-                    }
-                },
-
-                getNoOfDays() {
-                    let daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
-                    let dayOfWeek = new Date(this.year, this.month, 1)
-                        .getDay(); // Get day of week for 1st of month
-
-                    let blankdaysArray = [];
-                    for (let i = 0; i < dayOfWeek; i++) {
-                        blankdaysArray.push(i); // Just push dummy values for alignment
-                    }
-
-                    let daysArray = [];
-                    for (let i = 1; i <= daysInMonth; i++) {
-                        daysArray.push(i);
-                    }
-
-                    this.blankdays = blankdaysArray;
-                    this.no_of_days = daysArray;
-                },
-
-                closeDatepicker() {
-                    this.showDatepicker = false;
-                },
-
-                // --- Existing Rate Checker Methods (adjusted for new date structure) ---
-
-                updateAgesFields() {
-                    const currentAgesCount = this.form.Ages.length;
-                    const newOccupants = Math.max(1, Math.min(10, parseInt(this.form.Occupants) || 1));
-
-                    if (newOccupants > currentAgesCount) {
-                        for (let i = currentAgesCount; i < newOccupants; i++) {
-                            this.form.Ages.push(0);
-                        }
-                    } else if (newOccupants < currentAgesCount) {
-                        this.form.Ages = this.form.Ages.slice(0, newOccupants);
-                    }
-                },
-
-                allFieldsValid() {
-                    // Basic checks for required fields
-                    if (!this.form['Unit Name'] || !this.form.Arrival || !this.form.Departure) {
-                        return false;
-                    }
-                    // Date logic: use parseDateForValidation for date objects
-                    const arrivalDate = this.parseDateForValidation(this.form.Arrival);
-                    const departureDate = this.parseDateForValidation(this.form.Departure);
-
-                    if (!arrivalDate || !departureDate || arrivalDate >= departureDate) {
-                        return false;
-                    }
-
-                    // Check occupants and ages
-                    if (this.form.Occupants < 1 || this.form.Occupants > 10) {
-                        return false;
-                    }
-                    for (let i = 0; i < this.form.Ages.length; i++) {
-                        const age = this.form.Ages[i];
-                        if (age === null || isNaN(age) || age < 0) {
-                            return false;
-                        }
-                    }
-                    return true;
-                },
-
-                async submitForm() {
-                    this.submitted = true;
-                    this.error = null;
-                    this.result = null;
-
-                    if (!this.allFieldsValid()) {
-                        this.error =
-                            "Please fill in all required fields and ensure dates are valid.";
-                        return;
-                    }
-
-                    this.loading = true;
-
-                    // **CHANGE STARTS HERE**
-                    // Do NOT convert dates to YYYY-MM-DD if your API expects DD/MM/YYYY.
-                    // The `this.form.Arrival` and `this.form.Departure` already hold DD/MM/YYYY.
-                    const payload = {
-                        'Unit Name': this.form['Unit Name'],
-                        'Arrival': this.form.Arrival, // Send as DD/MM/YYYY
-                        'Departure': this.form.Departure, // Send as DD/MM/YYYY
-                        'Occupants': this.form.Occupants,
-                        'Ages': this.form.Ages
-                    };
-                    // **CHANGE ENDS HERE**
-                    console.log('Full Payload sent to API:', payload); // See the exact payload
-                    // Define your API endpoint here
-                    const apiUrl =
-                        'api/get-rates'; // <--- IMPORTANT: Replace with your actual API URL
-
-                    try {
-                        const response = await fetch(apiUrl, {
-                            method: 'POST', // Assuming your API expects a POST request
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Accept': 'application/json',
-                                // Add any other necessary headers
-                            },
-                            body: JSON.stringify(payload) // Send the payload as JSON
-                        });
-
-                        if (!response.ok) {
-                            const errorData = await response.json();
-                            // Assuming the error data contains an 'errors' object for validation messages
-                            if (errorData.errors) {
-                                let detailedError = "Validation Errors:<br>";
-                                for (const key in errorData.errors) {
-                                    detailedError += `- ${errorData.errors[key].join(', ')}<br>`;
-                                }
-                                throw new Error(detailedError);
-                            } else {
-                                throw new Error(errorData.message ||
-                                    `API error: ${response.statusText}`);
-                            }
-                        }
-
-                        const responseData = await response.json();
-
-                        if (responseData.success === false) {
-                            this.error = responseData.message || "An unknown error occurred.";
-                        } else {
-                            this.result = responseData;
-                            console.log(responseData)
-                        }
-
-                    } catch (e) {
-                        console.error("API Error:", e);
-                        this.error = e.message ||
-                            "Failed to fetch rates. Please check your network connection or the API endpoint.";
-                    } finally {
-                        this.loading = false;
-                    }
-                },
-
-                formatCurrency(amount) {
-                    // Simple currency formatting for display
-                    return new Intl.NumberFormat('en-US', {
-                        style: 'currency',
-                        currency: 'NAD'
-                    }).format(amount);
+                if (this.form.Arrival) {
+                this.dateFrom = this.parseDateForValidation(this.form.Arrival);
+                this.outputDateFromValue = this.form.Arrival;
                 }
+                if (this.form.Departure) {
+                this.dateTo = this.parseDateForValidation(this.form.Departure);
+                this.outputDateToValue = this.form.Departure;
+                }
+            },
+
+            parseDateForValidation(dateString) {
+                if (!dateString) return null;
+                const parts = dateString.split('/');
+                if (parts.length === 3) {
+                const d = new Date(parseInt(parts[2]), parseInt(parts[1]) - 1, parseInt(parts[
+                    0]));
+                d.setHours(0, 0, 0, 0);
+                return d;
+                }
+                return null;
+            },
+
+            convertDmYToYmd(dateString) {
+                if (!dateString) return '';
+                const parts = dateString.split('/');
+                if (parts.length === 3) {
+                return `${parts[2]}-${parts[1]}-${parts[0]}`;
+                }
+                return dateString;
+            },
+
+            formatDateForDisplay(dateYmdString) {
+                if (!dateYmdString) return '';
+                const parts = dateYmdString.split('-');
+                if (parts.length === 3) {
+                return `${parts[2]}/${parts[1]}/${parts[0]}`;
+                }
+                return dateYmdString;
+            },
+
+            initDatepicker() {
+                let targetDate = new Date();
+
+                if (this.endToShow === 'from' && this.dateFrom) {
+                targetDate = this.dateFrom;
+                } else if (this.endToShow === 'to' && this.dateTo) {
+                targetDate = this.dateTo;
+                } else if (this.dateFrom) {
+                targetDate = this.dateFrom;
+                } else if (this.dateTo) {
+                targetDate = this.dateTo;
+                }
+
+                this.month = targetDate.getMonth();
+                this.year = targetDate.getFullYear();
+                this.getNoOfDays();
+            },
+
+            isToday(date) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const d = new Date(this.year, this.month, date);
+                d.setHours(0, 0, 0, 0);
+                return today.toDateString() === d.toDateString();
+            },
+
+            isPastDate(date) {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const d = new Date(this.year, this.month, date);
+                d.setHours(0, 0, 0, 0);
+                return d < today;
+            },
+
+            isDateFrom(date) {
+                const d = new Date(this.year, this.month, date);
+                d.setHours(0, 0, 0, 0);
+                return this.dateFrom && d.toDateString() === this.dateFrom.toDateString();
+            },
+
+            isDateTo(date) {
+                const d = new Date(this.year, this.month, date);
+                d.setHours(0, 0, 0, 0);
+                return this.dateTo && d.toDateString() === this.dateTo.toDateString();
+            },
+
+            isInRange(date) {
+                const d = new Date(this.year, this.month, date);
+                d.setHours(0, 0, 0, 0);
+
+                if (!this.dateFrom) return false;
+
+                let effectiveDateFrom = this.dateFrom;
+                let effectiveDateTo = this.dateTo;
+
+                if (!effectiveDateTo || (this.endToShow === 'to' && d < effectiveDateFrom)) {
+                effectiveDateTo = d;
+                }
+
+                if (effectiveDateFrom > effectiveDateTo) {
+                [effectiveDateFrom, effectiveDateTo] = [effectiveDateTo, effectiveDateFrom];
+                }
+
+                return d > effectiveDateFrom && d < effectiveDateTo;
+            },
+
+            getDateValue(date) {
+                if (this.isPastDate(date)) {
+                return;
+                }
+
+                let selectedDate = new Date(this.year, this.month, date);
+                selectedDate.setHours(0, 0, 0, 0);
+
+                if (!this.dateFrom || (this.dateFrom && this.dateTo)) {
+                this.dateFrom = selectedDate;
+                this.dateTo = null;
+                this.endToShow = 'to';
+                } else if (this.dateFrom && !this.dateTo) {
+                if (selectedDate <= this.dateFrom) {
+                    this.dateTo = this.dateFrom;
+                    this.dateFrom = selectedDate;
+                } else {
+                    this.dateTo = selectedDate;
+                }
+                this.closeDatepicker();
+                }
+                this.outputDateValues();
+            },
+
+            outputDateValues() {
+                if (this.dateFrom) {
+                this.outputDateFromValue = this.dateFrom.toLocaleDateString('en-GB');
+                this.form.Arrival = this.outputDateFromValue;
+                } else {
+                this.outputDateFromValue = '';
+                this.form.Arrival = '';
+                }
+
+                if (this.dateTo) {
+                this.outputDateToValue = this.dateTo.toLocaleDateString('en-GB');
+                this.form.Departure = this.outputDateToValue;
+                } else {
+                this.outputDateToValue = '';
+                this.form.Departure = '';
+                }
+            },
+
+            getNoOfDays() {
+                let daysInMonth = new Date(this.year, this.month + 1, 0).getDate();
+                let dayOfWeek = new Date(this.year, this.month, 1).getDay();
+
+                let blankdaysArray = [];
+                for (let i = 0; i < dayOfWeek; i++) {
+                blankdaysArray.push(i);
+                }
+
+                let daysArray = [];
+                for (let i = 1; i <= daysInMonth; i++) {
+                daysArray.push(i);
+                }
+
+                this.blankdays = blankdaysArray;
+                this.no_of_days = daysArray;
+            },
+
+            closeDatepicker() {
+                this.showDatepicker = false;
+            },
+
+            updateAgesFields() {
+                const currentAgesCount = this.form.Ages.length;
+                const newOccupants = Math.max(1, Math.min(10, parseInt(this.form.Occupants) || 1));
+
+                if (newOccupants > currentAgesCount) {
+                for (let i = currentAgesCount; i < newOccupants; i++) {
+                    this.form.Ages.push(0);
+                }
+                } else if (newOccupants < currentAgesCount) {
+                this.form.Ages = this.form.Ages.slice(0, newOccupants);
+                }
+            },
+
+            allFieldsValid() {
+                if (!this.form['Unit Name'] || !this.form.Arrival || !this.form.Departure) {
+                return false;
+                }
+                const arrivalDate = this.parseDateForValidation(this.form.Arrival);
+                const departureDate = this.parseDateForValidation(this.form.Departure);
+
+                if (!arrivalDate || !departureDate || arrivalDate >= departureDate) {
+                return false;
+                }
+
+                if (this.form.Occupants < 1 || this.form.Occupants > 10) {
+                return false;
+                }
+                for (let i = 0; i < this.form.Ages.length; i++) {
+                const age = this.form.Ages[i];
+                if (age === null || isNaN(age) || age < 0) {
+                    return false;
+                }
+                }
+                return true;
+            },
+
+            async submitForm() {
+                this.submitted = true;
+                this.error = null;
+                this.result = null;
+
+                if (!this.allFieldsValid()) {
+                this.error = "Please fill in all required fields and ensure dates are valid.";
+                return;
+                }
+
+                this.loading = true;
+
+                const payload = {
+                'Unit Name': this.form['Unit Name'],
+                'Arrival': this.form.Arrival,
+                'Departure': this.form.Departure,
+                'Occupants': this.form.Occupants,
+                'Ages': this.form.Ages
+                };
+                console.log('Full Payload sent to API:', payload);
+                const apiUrl = 'api/get-rates';
+
+                try {
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json',
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    if (errorData.errors) {
+                    let detailedError = "Validation Errors:<br>";
+                    for (const key in errorData.errors) {
+                        detailedError += `- ${errorData.errors[key].join(', ')}<br>`;
+                    }
+                    throw new Error(detailedError);
+                    } else {
+                    throw new Error(errorData.message || `API error: ${response.statusText}`);
+                    }
+                }
+
+                const responseData = await response.json();
+
+                if (responseData.success === false) {
+                    this.error = responseData.message || "An unknown error occurred.";
+                } else {
+                    this.result = responseData;
+                    console.log(responseData)
+                }
+
+                } catch (e) {
+                console.error("API Error:", e);
+                this.error = e.message || "Failed to fetch rates. Please check your network connection or the API endpoint.";
+                } finally {
+                this.loading = false;
+                }
+            },
+
+            formatCurrency(amount) {
+                return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: 'NAD'
+                }).format(amount);
+            }
             }));
         });
     </script>

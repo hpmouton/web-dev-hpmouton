@@ -20,15 +20,19 @@ jobs:
         coverage: xdebug
 
     - run: composer install --no-ansi --no-interaction --no-progress --prefer-dist
+
     - run: npm install && npm run build
 
     - run: |
         cp .env.example .env
         php artisan key:generate
 
-    # - run: vendor/bin/pint --test
-
     - run: vendor/bin/pest --coverage-clover=coverage.xml
+
+    - name: SonarQube Scan
+      uses: SonarSource/sonarqube-scan-action@v4
+      env:
+        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
     - uses: actions/upload-artifact@v4
       with:

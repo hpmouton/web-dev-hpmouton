@@ -2,10 +2,11 @@
 
 @section('content')
     <div class="min-h-screen bg-gray-50 py-4 px-4 sm:px-6 lg:px-8" x-data="rateChecker()">
-        <div class="max-w-8xl mx-auto bg-white border rounded-xl p-8 md:p-10 space-y-8 border border-gray-200">
+        <div class="max-w-8xl mx-auto  p-8 md:p-10 space-y-8 ">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-x-4 gap-y-8">
-                <div class="lg:border-r lg:col-span-2 lg:border-gray-200 lg:pr-8 space-y-7">
+                <div class="rounded-xl p-12 bg-white border lg:col-span-2 border-gray-200 lg:pr-8 space-y-7">
                     <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-3">Get a Quote for Your Next Adventure</h2>
+                    @csrf
                     <form @submit.prevent="submitForm" class="space-y-6">
                         <div>
                             <label class="block text-sm font-semibold text-gray-800 mb-2">Select Unit Type</label>
@@ -18,12 +19,10 @@
                                         }"
                                         class="relative group overflow-hidden rounded-xl cursor-pointer transition-all duration-300 ease-in-out">
 
-                                        <!-- Image Container -->
                                         <div class="relative h-48 w-full">
                                             <img :src="unit.image" :alt="unit.name"
                                                 class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110">
 
-                                            <!-- Glassmorphic Overlay - Only visible on hover -->
                                             <div
                                                 class="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                                 <div
@@ -55,8 +54,9 @@
                         </div>
 
                         <div>
-                            <label for="datepicker" class="block text-sm font-semibold text-gray-800 mb-2">Select Stay
-                                Dates</label>
+                            <label for="datepicker"
+                            class="block text-sm font-semibold text-gray-800 mb-2">
+                                Select Stay Dates</label>
                             <div class="relative" @keydown.escape="closeDatepicker()" @click.outside="closeDatepicker()">
                                 <div
                                     class="inline-flex items-center border border-gray-300 rounded-lg border bg-white w-full">
@@ -147,8 +147,9 @@
 
 
                         <div>
-                            <label for="occupants" class="block text-sm font-semibold text-gray-800 mb-2">Number of
-                                Guests</label>
+                            <label for="occupants"
+                            class="block text-sm font-semibold text-gray-800 mb-2">
+                                Number of Guests</label>
                             <input id="occupants" x-model.number="form.Occupants" type="number" min="1"
                                 max="10" @input="updateAgesFields"
                                 class="form-input w-full px-4 py-2.5 border border-gray-300 rounded-lg border focus:ring-yellow-500 focus:border-yellow-500 text-base appearance-none transition-all duration-200 ease-in-out">
@@ -195,7 +196,7 @@
                     </form>
                 </div>
 
-                <div class="space-y-7 lg:pl-8">
+                <div class="space-y-7 lg:pl-8 rounded-xl p-12 bg-white border border-gray-200">
                     <h2 class="text-2xl font-bold text-gray-800 mb-5 border-b pb-3">Your Results</h2>
 
                     <template x-if="error">

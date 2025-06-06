@@ -2,10 +2,10 @@
 {
     "name": "Laravel PHP",
     "dockerComposeFile": [
-        "../docker-compose.yml" // Adjust path if your docker-compose.yml is not in the root
+        "../docker-compose.yml"
     ],
-    "service": "app", // The name of your Laravel application service in docker-compose.yml
-    "workspaceFolder": "/var/www/html", // The working directory inside the container
+    "service": "laravel.test",
+    "workspaceFolder": "/var/www/html",
     "shutdownAction": "stopCompose",
 
     "customizations": {

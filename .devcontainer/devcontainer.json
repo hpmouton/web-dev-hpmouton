@@ -29,9 +29,6 @@
         }
     },
 
-    // Uncomment the next line if you want to run commands after the container is created.
-    // "postCreateCommand": "composer install && php artisan key:generate && php artisan migrate --seed",
-
-    // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
-    // "remoteUser": "vscode" // Or your user from the Dockerfile
+    "postCreateCommand": "composer install && php artisan key:generate && php artisan scribe:generate",
+    "postStartCommand": "composer run dev"
 }

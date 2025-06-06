@@ -1,0 +1,90 @@
+name: Endpoints
+description: ''
+endpoints:
+  -
+    httpMethods:
+      - POST
+    uri: api/get-rates
+    metadata:
+      groupName: Endpoints
+      groupDescription: ''
+      subgroup: ''
+      subgroupDescription: ''
+      title: ''
+      description: ''
+      authenticated: false
+      custom: []
+    headers:
+      Content-Type: application/json
+      Accept: application/json
+    urlParameters: []
+    cleanUrlParameters: []
+    queryParameters: []
+    cleanQueryParameters: []
+    bodyParameters:
+      'Unit Name':
+        name: 'Unit Name'
+        description: ''
+        required: true
+        example: architecto
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      Arrival:
+        name: Arrival
+        description: 'Must be a valid date in the format <code>d/m/Y</code>.'
+        required: true
+        example: 06/06/2025
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      Departure:
+        name: Departure
+        description: 'Must be a valid date in the format <code>d/m/Y</code>.'
+        required: true
+        example: 06/06/2025
+        type: string
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      Occupants:
+        name: Occupants
+        description: 'Must be at least 1.'
+        required: true
+        example: 22
+        type: integer
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+      Ages:
+        name: Ages
+        description: 'Must be at least 0.'
+        required: false
+        example:
+          - 84
+        type: 'integer[]'
+        enumValues: []
+        exampleWasSpecified: false
+        nullable: false
+        custom: []
+    cleanBodyParameters:
+      'Unit Name': architecto
+      Arrival: 06/06/2025
+      Departure: 06/06/2025
+      Occupants: 22
+      Ages:
+        - 84
+    fileParameters: []
+    responses: []
+    responseFields: []
+    auth: []
+    controller: null
+    method: null
+    route: null
+    custom: []

@@ -20,6 +20,7 @@ jobs:
         coverage: xdebug
 
     - run: composer install --no-ansi --no-interaction --no-progress --prefer-dist
+    - run: npm install && npm run build
 
     - run: |
         cp .env.example .env

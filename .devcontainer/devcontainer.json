@@ -1,27 +1,37 @@
-// https://aka.ms/devcontainer.json
+// .devcontainer/devcontainer.json
 {
-	"name": "Existing Docker Compose (Extend)",
-	"dockerComposeFile": [
-		"../docker-compose.yml"
-	],
-	"service": "laravel.test",
-	"workspaceFolder": "/var/www/html",
-	"customizations": {
-		"vscode": {
-			"extensions": [
-				// "laravel.vscode-laravel",
-				// "mikestead.dotenv",
-				// "amiralizadeh9480.laravel-extra-intellisense",
-				// "ryannaddy.laravel-artisan",
-				// "onecentlin.laravel5-snippets",
-				// "onecentlin.laravel-blade"
-			],
-			"settings": {}
-		}
-	},
-	"remoteUser": "sail",
-	"postCreateCommand": "chown -R 1000:1000 /var/www/html 2>/dev/null || true"
-	// "forwardPorts": [],
-	// "runServices": [],
-	// "shutdownAction": "none",
+    "name": "Laravel PHP",
+    "dockerComposeFile": [
+        "../docker-compose.yml" // Adjust path if your docker-compose.yml is not in the root
+    ],
+    "service": "app", // The name of your Laravel application service in docker-compose.yml
+    "workspaceFolder": "/var/www/html", // The working directory inside the container
+    "shutdownAction": "stopCompose",
+
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.defaultProfile.linux": "bash",
+                "php.validate.executablePath": "/usr/bin/php", // Path to PHP in the container
+                "laravel.artisan.execute.on.save": false, // Example setting
+                "editor.formatOnSave": true
+            },
+            "extensions": [
+                "bmewburn.vscode-intelephense-client",
+                "felixfbecker.php-debug",
+                "esbenp.prettier-vscode",
+                "ms-vscode.vscode-typescript-next",
+                "shufo.vscode-blade-formatter",
+                "onecentlin.laravel-blade",
+                "mikestead.laravel-goto-controller",
+                "bradlc.vscode-tailwindcss"
+            ]
+        }
+    },
+
+    // Uncomment the next line if you want to run commands after the container is created.
+    // "postCreateCommand": "composer install && php artisan key:generate && php artisan migrate --seed",
+
+    // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
+    // "remoteUser": "vscode" // Or your user from the Dockerfile
 }

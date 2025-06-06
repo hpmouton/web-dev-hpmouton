@@ -56,8 +56,8 @@
                                 Please select a unit.</p>
                         </div>
 
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="col-span-2">
                                 <label for="datepicker" class="block text-sm font-semibold text-gray-800 mb-2">
                                     Select Stay Dates
                                 </label>
@@ -70,17 +70,18 @@
                                         <input type="text" @click="endToShow = 'to'; initDatepicker(); showDatepicker = true"
                                             x-model="outputDateToValue" :class="{ 'font-semibold': endToShow == 'to' }"
                                             class="focus:outline-none border-0 p-2.5 w-full rounded-r-lg border-l border-gray-300" />
+
                                     </div>
                                     <div x-show="(!form.Arrival || !form.Departure) && submitted" class="mt-1.5">
                                         <p x-show="!form.Arrival" class="text-xs text-red-500 animate-pulse">Arrival date required.</p>
                                         <p x-show="!form.Departure" class="text-xs text-red-500 animate-pulse">Departure date required.</p>
-                                    </div>
 
-                                    <!-- Date Picker Popup -->
+                                    </div>
+                                     <p class="text-xs text-gray-500 mt-1.5">How long do you plan on enjoying yourself?</p>
+
                                     <div class="bg-white mt-2 rounded-lg border p-4 absolute z-10" style="width: 17rem"
                                         x-show="showDatepicker" x-transition>
                                         <div class="flex flex-col items-center">
-                                            <!-- Calendar Header -->
                                             <div class="w-full flex justify-between items-center mb-2">
                                                 <div>
                                                     <span x-text="MONTH_NAMES[month]" class="text-lg font-bold text-gray-800"></span>
@@ -102,7 +103,6 @@
                                                 </div>
                                             </div>
 
-                                            <!-- Calendar Days -->
                                             <div class="w-full flex flex-wrap mb-3 -mx-1">
                                                 <template x-for="(day, index) in DAYS" :key="index">
                                                     <div style="width: 14.26%" class="px-1">
@@ -111,7 +111,6 @@
                                                 </template>
                                             </div>
 
-                                            <!-- Calendar Dates -->
                                             <div class="flex flex-wrap -mx-1">
                                                 <template x-for="blankday in blankdays">
                                                     <div style="width: 14.28%" class="text-center border p-1 border-transparent text-sm"></div>
@@ -340,7 +339,7 @@
             units: [{
                 name: 'Kalahari Farmhouse',
                 image: 'https://travelground.imgix.net/AAEAAQAAAAAAAAAAAAAAd9ba2af10e20060dc151da5d7b3b00d6dbf5f77d283c33396fafb5fd7a9fe9e6e3b42aa098e2ef07d44359e00a692e964a07?fit=crop&auto=enhance,format,compress&q=80&w=1600&ar=1:1',
-                description: 'A luxurious farmhouse retreat nestled in the Kalahari desert, offering comfortable rooms with modern amenities and authentic farm-style hospitality.'
+                description: 'Resting at the fringes of the Kalahari Farmhouse, in a grove of palm trees, Kalahari Farmhouse Campsite is an unexpected find in the Kalahari. Blessed with artesian water, the small pocket of land is a verdant oasis that produces an abundance of produce for the Gondwana Collection.'
                 },
                 {
                 name: 'Klipspringer Camps',

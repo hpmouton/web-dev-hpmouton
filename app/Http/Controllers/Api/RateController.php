@@ -9,8 +9,15 @@ use Illuminate\Support\Facades\Http;
 
 class RateController extends Controller
 {
-    public function getRates(Request $request)
+    /**
+     * Get rates from remote API
+     *
+     * @param Request $request The incoming request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getRates(Request $request): \Illuminate\Http\JsonResponse
     {
+        /** @var array{Unit Name: string, Arrival: string, Departure: string, Occupants: int, Ages: array<int>} $data */
         $data = $request->validate([
             'Unit Name' => 'required|string',
             'Arrival' => 'required|date_format:d/m/Y',
@@ -22,10 +29,12 @@ class RateController extends Controller
 
         $originalAges = $data['Ages'];
 
-        $guestsForRemoteApi = collect($originalAges)->map(function ($age) {
+        /** @var array<array{Age Group: string}> $guestsForRemoteApi */
+        $guestsForRemoteApi = collect($originalAges)->map(function (int $age): array {
             return ['Age Group' => ($age >= 13) ? 'Adult' : 'Child'];
         })->all();
 
+        /** @var array<string, int> $unitMap */
         $unitMap = [
             'Kalahari Farmhouse' => -2147483637,
             'Klipspringer Camps' => -2147483456,
@@ -39,6 +48,7 @@ class RateController extends Controller
             ], 422);
         }
 
+        /** @var array{Unit Type ID: int, Arrival: string, Departure: string, Guests: array<array{Age Group: string}>} $payload */
         $payload = [
             'Unit Type ID' => $unitMap[$unitName],
             'Arrival' => Carbon::createFromFormat('d/m/Y', $data['Arrival'])->toDateString(),
@@ -64,6 +74,7 @@ class RateController extends Controller
             ], $response->status());
         }
 
+        /** @var array<string, mixed> $jsonResponse */
         $jsonResponse = $response->json();
 
         if (! is_array($jsonResponse) || (! isset($jsonResponse['Rates']) && ! isset($jsonResponse['Legs']))) {
@@ -78,9 +89,9 @@ class RateController extends Controller
             ], 500);
         }
 
-        if (isset($jsonResponse['Legs'])) {
+        if (isset($jsonResponse['Legs']) && is_array($jsonResponse['Legs'])) {
             foreach ($jsonResponse['Legs'] as &$leg) {
-                if (isset($leg['Deposit Breakdown'])) {
+                if (isset($leg['Deposit Breakdown']) && is_array($leg['Deposit Breakdown'])) {
                     foreach ($leg['Deposit Breakdown'] as &$deposit) {
                         if (isset($deposit['Due Day']) && is_numeric($deposit['Due Day'])) {
                             $unixTimestamp = ($deposit['Due Day'] - 25569) * 86400;
@@ -95,6 +106,7 @@ class RateController extends Controller
             }
         }
 
+        /** @var array<array{age: int, your_category: string}> $processedGuests */
         $processedGuests = [];
         foreach ($originalAges as $age) {
             $category = '';

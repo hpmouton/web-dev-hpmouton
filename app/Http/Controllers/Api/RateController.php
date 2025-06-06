@@ -83,8 +83,6 @@ class RateController extends Controller
                 if (isset($leg['Deposit Breakdown'])) {
                     foreach ($leg['Deposit Breakdown'] as &$deposit) {
                         if (isset($deposit['Due Day']) && is_numeric($deposit['Due Day'])) {
-                            // Convert Excel serial date to Carbon date
-                            // Assuming 25569 is the correct magic number for your system/API
                             $unixTimestamp = ($deposit['Due Day'] - 25569) * 86400;
                             if ($unixTimestamp > 0) {
                                 $deposit['Due Date Formatted'] = Carbon::createFromTimestamp($unixTimestamp)->format('d/m/Y');

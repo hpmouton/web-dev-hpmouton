@@ -30,5 +30,5 @@
     },
 
     "postCreateCommand": "composer install && php artisan key:generate && php artisan scribe:generate",
-    "postStartCommand": "composer run dev"
+    "postStartCommand": ""
 }

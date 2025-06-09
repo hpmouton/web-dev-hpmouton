@@ -17,5 +17,3 @@ ARG GID=1000
 RUN addgroup -g ${GID} laravel \
     && adduser -u ${UID} -G laravel -s /bin/sh -D laravel
 USER laravel
-
-EXPOSE 80

@@ -1,6 +1,7 @@
 ---
 [![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=hpmouton_web-dev-hpmouton)
 
+[![App Image](https://res.cloudinary.com/dvol642yc/image/upload/v1749460036/rate_zykui3.png)
 # Rate Checker App
 
 This app helps users easily check accommodation rates. Just pick a unit, your dates, and how many people are staying, and it'll show you the price!

@@ -1,5 +1,6 @@
 ---
 [![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=hpmouton_web-dev-hpmouton)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=hpmouton_web-dev-hpmouton&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=hpmouton_web-dev-hpmouton)
 
 [![AppImage](https://res.cloudinary.com/dvol642yc/image/upload/v1749460036/rate_zykui3.png)](https://res.cloudinary.com/dvol642yc/image/upload/v1749460036/rate_zykui3.png)
 # Rate Checker App
